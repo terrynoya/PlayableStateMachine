@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
+using UnityEngine.UI;
 
 public class PlayableStateMachineTestMain : MonoBehaviour
 {
@@ -17,8 +18,17 @@ public class PlayableStateMachineTestMain : MonoBehaviour
     private PlayableClipMixerStateMachine _stateMachine = new PlayableClipMixerStateMachine();
     private List<int> _stateIds = new List<int>();
     // Start is called before the first frame update
+    
+    [SerializeField]
+    private int _stateId;
+    
+    [SerializeField]
+    private Button _btnChangeState;
+    
     void Awake()
     {
+        _btnChangeState.onClick.AddListener(OnBtnChangeStateClick);
+        
         PlayableGraph graph = PlayableGraph.Create("test_play_queue_graph");
         _graph = graph;
         graph.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
@@ -44,10 +54,16 @@ public class PlayableStateMachineTestMain : MonoBehaviour
             
         graph.Play();
     }
+    
+    private void OnBtnChangeStateClick()
+    {
+        _stateMachine.ChangeState(_stateId);
+    }
 
     // Update is called once per frame
     void Update()
     {
-        
+        float dt = Time.deltaTime;
+        _stateMachine.Update(dt);
     }
 }
