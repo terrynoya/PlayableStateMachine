@@ -838,9 +838,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animator: {fileID: 395679917}
   _anims:
-  - {fileID: 7400000, guid: 9961b878d8237cd4c96e61ebca9772a5, type: 3}
-  - {fileID: 7400000, guid: e519cbc3d9768df4fb7e5e8f8278b4d1, type: 3}
   - {fileID: 7400000, guid: 9ce0b1303809723468ba5fba725cc386, type: 3}
+  - {fileID: 7400000, guid: e519cbc3d9768df4fb7e5e8f8278b4d1, type: 3}
+  - {fileID: 7400000, guid: 9961b878d8237cd4c96e61ebca9772a5, type: 3}
   _stateId: 0
   _btnChangeState: {fileID: 566228262}
 --- !u!4 &2063106689

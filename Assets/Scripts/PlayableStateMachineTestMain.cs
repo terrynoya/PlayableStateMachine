@@ -11,8 +11,7 @@ public class PlayableStateMachineTestMain : MonoBehaviour
     private Animator _animator;
     [SerializeField]
     private List<AnimationClip> _anims;
-
-    private AnimationMixerPlayable _mixer;
+    
     private PlayableGraph _graph;
     
     private PlayableClipMixerStateMachine _stateMachine = new PlayableClipMixerStateMachine();
@@ -35,26 +34,39 @@ public class PlayableStateMachineTestMain : MonoBehaviour
 
         AnimationPlayableOutput animOutput = AnimationPlayableOutput.Create(graph, "anim", _animator);
         AnimationMixerPlayable mixer = AnimationMixerPlayable.Create(graph, _anims.Count);
-        _mixer = mixer;
         animOutput.SetSourcePlayable(mixer);
 
         for (int i = 0; i < _anims.Count; i++)
         {
             AnimationClipPlayable clipPlayable = AnimationClipPlayable.Create(graph, _anims[i]);
             graph.Connect(clipPlayable, 0, mixer, i);
-            // _animPlayables.Add(clipPlayable);
-                
             PlayableClipMixerState mixerState = new PlayableClipMixerState(i,clipPlayable,mixer,i);
             _stateMachine.AddState(mixerState);
             _stateIds.Add(mixerState.Id);
-            // _states.Add(mixerState);
         }
-            
+
+        //attack->idle when anim finished
+        _stateMachine.GetState(1).OnUpdate += OnAttackUpdate;
+        
         _stateMachine.ChangeState(0);
             
         graph.Play();
+
+        // for (int i = 0; i < mixer.GetInputCount(); i++)
+        // {
+        //     Playable playable = mixer.GetInput(i);
+        //     Debug.Log(playable.GetPlayableType());
+        // }
     }
-    
+
+    private void OnAttackUpdate(PlayableClipMixerState state)
+    {
+        if (state.IsComplete())
+        {
+            _stateMachine.ChangeState(0);
+        }
+    }
+
     private void OnBtnChangeStateClick()
     {
         _stateMachine.ChangeState(_stateId);

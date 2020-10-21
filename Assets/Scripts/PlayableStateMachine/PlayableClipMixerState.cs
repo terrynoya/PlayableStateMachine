@@ -4,6 +4,8 @@
 //
 //=================================================
 
+using System;
+using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 
@@ -16,6 +18,10 @@ public class PlayableClipMixerState
     private int _id;
     private int _inputIndex;
 
+    private PlayableClipMixerStateMachine _stateMachine;
+
+    public Action<PlayableClipMixerState> OnUpdate;
+
     public PlayableClipMixerState(int inputIndex,AnimationClipPlayable playable,AnimationMixerPlayable mixer,int id)
     {
         _playable = playable;
@@ -23,6 +29,12 @@ public class PlayableClipMixerState
         _mixer = mixer;
         _inputIndex = inputIndex;
         _id = id;
+    }
+
+    public PlayableClipMixerStateMachine StateMachine
+    {
+        get { return _stateMachine; }
+        set { _stateMachine = value; }
     }
 
     public int Id
@@ -39,7 +51,11 @@ public class PlayableClipMixerState
 
     public void Update(float dt)
     {
-            
+        // if (IsComplete() && _id != 0)
+        // {
+        //     _stateMachine.ChangeState(0);
+        // }
+        OnUpdate?.Invoke(this);
     }
 
     public void Enter(float weight = 1)

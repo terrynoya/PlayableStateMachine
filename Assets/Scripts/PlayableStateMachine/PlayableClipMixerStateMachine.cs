@@ -24,6 +24,7 @@ public class PlayableClipMixerStateMachine
 
         public void AddState(PlayableClipMixerState mixerState)
         {
+            mixerState.StateMachine = this;
             _states.Add(mixerState.Id,mixerState);
         }
 
@@ -77,5 +78,6 @@ public class PlayableClipMixerStateMachine
                 }
                 return;
             }
+            _currentState.Update(dt);
         }
 }
