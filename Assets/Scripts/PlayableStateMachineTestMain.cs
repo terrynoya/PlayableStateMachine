@@ -44,9 +44,13 @@ public class PlayableStateMachineTestMain : MonoBehaviour
             _stateMachine.AddState(mixerState);
             _stateIds.Add(mixerState.Id);
         }
+        
+        _stateMachine.SetCrossFadeDuration(0.1f);
 
         //attack->idle when anim finished
         _stateMachine.GetState(1).OnUpdate += OnAttackUpdate;
+        _stateMachine.GetState(2).OnUpdate += OnRunStateUpdate;
+        _stateMachine.GetState(0).OnUpdate += OnIdleStateUpdate;
         
         _stateMachine.ChangeState(0);
             
@@ -57,6 +61,26 @@ public class PlayableStateMachineTestMain : MonoBehaviour
         //     Playable playable = mixer.GetInput(i);
         //     Debug.Log(playable.GetPlayableType());
         // }
+    }
+
+    private void OnIdleStateUpdate(PlayableClipMixerState obj)
+    {
+        if (Input.GetKey(KeyCode.W))
+        {
+            _stateMachine.ChangeState(2);
+        }
+        if (Input.GetKey(KeyCode.K))
+        {
+            _stateMachine.ChangeState(1);
+        }
+    }
+
+    private void OnRunStateUpdate(PlayableClipMixerState state)
+    {
+        if (!Input.GetKey(KeyCode.W))
+        {
+            _stateMachine.ChangeState(0);
+        }
     }
 
     private void OnAttackUpdate(PlayableClipMixerState state)

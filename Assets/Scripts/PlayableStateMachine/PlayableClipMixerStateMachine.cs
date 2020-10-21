@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayableClipMixerStateMachine
 {
-    private PlayableClipStateCrossFade _crossFade;
+        private PlayableClipStateCrossFade _crossFade;
         private bool _isCrossfading;
         private Dictionary<int,PlayableClipMixerState> _states;
         
@@ -20,6 +20,11 @@ public class PlayableClipMixerStateMachine
         public Dictionary<int, PlayableClipMixerState> States
         {
             get { return _states; }
+        }
+
+        public void SetCrossFadeDuration(float duration)
+        {
+            _crossFade.SetDuration(duration);
         }
 
         public void AddState(PlayableClipMixerState mixerState)
@@ -51,7 +56,7 @@ public class PlayableClipMixerStateMachine
             else
             {
                 _nextState = newState;
-                _crossFade.SetData(_currentState, newState, 0.5f);
+                _crossFade.SetData(_currentState, newState);
                 _isCrossfading = true;    
             }
             
